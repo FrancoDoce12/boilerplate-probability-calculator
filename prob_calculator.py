@@ -20,9 +20,8 @@ class Hat:
 
         balls = []
         for i in range(how_many):
-            balls.append(self.contents.pop(random.randint(0, ((self.contents.__len__())-1))))
+            balls.append(self.contents.pop(random.randint(0, ((self.contents.__len__()) - 1))))
         return balls
-
 
 
 def experiment(hat: Hat, expected_balls: dict, num_balls_drawn: int, num_experiments: int):
@@ -37,9 +36,10 @@ def experiment(hat: Hat, expected_balls: dict, num_balls_drawn: int, num_experim
                 ball_get[ball] += 1
             except KeyError:
                 ball_get[ball] = 1
-        if list(ball_get.keys()).__contains__(list(expected_balls.keys())):
+        condition = contains(get_keys(ball_get), get_keys(expected_balls))
+        if condition:
             for key, value in expected_balls.items():
-                if ball_get[key] >= value:
+                if ball_get[f"{key}"] >= value:
                     continue
                 else:
                     compished_experiment = False
@@ -49,8 +49,19 @@ def experiment(hat: Hat, expected_balls: dict, num_balls_drawn: int, num_experim
         if compished_experiment:
             total_acomplished += 1
 
-
-
-
     print(total_acomplished / num_experiments)
     return total_acomplished / num_experiments
+
+
+def get_keys(dictionary: dict):
+    result: list = []
+    for key, value in dictionary.items():
+        result.append(key)
+    return result
+
+
+def contains(set_container, set_being_containing):
+    for element in set_being_containing:
+        if not(element in set_container):
+            return False
+    return True
